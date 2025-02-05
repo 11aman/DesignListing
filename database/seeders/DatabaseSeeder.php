@@ -15,6 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        $user = \App\Models\User::create([
+            'name' => 'Admin Name',
+            'email' => 'admin@yopmail.com',
+            'password' => bcrypt('Admin@123'),
+            'role' => 'admin',  // assign the admin role
+        ]);
+        
         $this->call([
             ProductCategorySeeder::class,
             FinishSeeder::class,

@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductCategoryController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\DesignController;
 use App\Livewire\DesignFilter;
 use App\Http\Controllers\ProductController;
 use App\Livewire\ImportExport;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return redirect('login');
@@ -20,13 +21,11 @@ Route::middleware([
 ])->group(function () {
     
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return view('designs');
     })->name('dashboard');
 
-    // ✅ All routes below are now protected
-    Route::resource('products', ProductController::class);
-    Route::resource('product-categories', ProductCategoryController::class);
-    Route::resource('designs', DesignController::class);
+    // Route::resource('product-categories', ProductCategoryController::class);
+    // Route::resource('designs', DesignController::class);
 
     Route::get('/designs', DesignFilter::class)->name('designs');
     Route::get('/export/{format}', [DesignFilter::class, 'export'])->name('export');
@@ -39,4 +38,26 @@ Route::middleware([
 
     Route::get('/get-subcategories/{categoryId}', [ProductController::class, 'getSubcategories']);
     Route::get('/get-finishes/{categoryId}', [ProductController::class, 'getFinishes']);
+});
+
+
+// Route::prefix('admin')
+//     ->name('admin.')
+//     ->middleware(['auth', 'admin'])
+//     ->group(function () {
+//         Route::resource('product_categories', ProductCategoryController::class);
+//         Route::resource('products', ProductController::class);
+
+//     });
+
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::group(['middleware' => function ($request, $next) {
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+        return $next($request);
+    }], function () {
+        Route::resource('product_categories', ProductCategoryController::class);
+        Route::resource('products', ProductController::class);
+    });
 });

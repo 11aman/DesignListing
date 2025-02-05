@@ -66,7 +66,6 @@ class DesignFilter extends Component
     if ($propertyName === 'selectedCategory') {
         $this->subCategories = ProductCategory::where('parent_id', $value)->get();
         $this->selectedSubCategory = null;
-        $this->selectedChildCategory = null;
     }
 
     // if ($propertyName === 'selectedSubCategory') {

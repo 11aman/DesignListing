@@ -18,7 +18,7 @@ class FinishProductSeeder extends Seeder
             ['finish_id' => 3, 'product_category_id' => 2], // Textured -> Laminate
             ['finish_id' => 3, 'product_category_id' => 3], // Textured -> Vinyl
             ['finish_id' => 4, 'product_category_id' => 2], // Satin -> Laminate
-            ['finish_id' => 5, 'product_category_id' => 3], // Embossed -> Vinyl
+            ['finish_id' => 5, 'product_category_id' => 2], // Embossed -> Vinyl
             ['finish_id' => 6, 'product_category_id' => 1], // Semi-Matte -> Wood
         ]);
     }

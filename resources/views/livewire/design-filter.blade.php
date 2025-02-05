@@ -17,14 +17,20 @@
     </div>
 @endif
 
-<h2 class="text-xl font-bold mb-4">Add and Import/Export Products</h2>
 
     <div class="flex justify-between gap-4 mb-2" style="height:100px">
+    @if(Auth::user()->role === 'admin') 
+    <h2 class="text-xl font-bold mb-4">Add and Import/Export Products</h2>
+
         <div>    
-            <a href="{{ route('products.create') }}" class="text-xs bg-gray-600 hover:bg-gray-700 text-white py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105 mt-4 block">
+            <a href="{{ route('admin.products.create') }}" class="text-xs bg-gray-600 hover:bg-gray-700 text-white py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105 mt-4 block">
             Add Product
             </a>
+            <a href="{{ route('admin.product_categories.index') }}" class="text-xs bg-gray-600 hover:bg-gray-700 text-white py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105 mt-4 block">
+            Manage Product Categories
+            </a>
         </div>
+     @endif   
         <div>
             <button wire:click="export('json')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105">Export as JSON</button>
             <button wire:click="export('csv')" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105">Export as CSV</button>
@@ -129,12 +135,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($products as $product)
                     <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h3 class="text-lg font-semibold">{{ $product->name }}<span  style="float: right;"><a href="{{ route('products.edit', $product->id) }}">edit</a> 
-                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('delete this product?');">
+                        <h3 class="text-lg font-semibold">{{ $product->name }}
+                        @if(Auth::user()->role === 'admin')
+                        <span  style="float: right;"><a href="{{ route('admin.products.edit', $product->id) }}">edit</a> 
+                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('delete this product?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-600">delete</button>
                         </form></span>
+                        @endif
                     </h3>
                         <p class="text-sm text-gray-600">Category: {{ $product->category->name }}</p>
                         @if($product->subCategory) <p class="text-sm text-gray-600">SubCategory: {{ $product->subCategory->name }}</p> @endif

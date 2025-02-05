@@ -14,7 +14,7 @@
             </div>
         @endif
 
-        <form action="{{ isset($product) ? route('products.update', $product->id) : route('products.store') }}" method="POST" class="space-y-4">
+        <form action="{{ isset($product) ? route('admin.products.update', $product->id) : route('admin.products.store') }}" method="POST" class="space-y-4">
             @csrf
             @if (isset($product))
                 @method('PUT')
