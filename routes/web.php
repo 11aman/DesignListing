@@ -21,7 +21,7 @@ Route::middleware([
 ])->group(function () {
     
     Route::get('/dashboard', function () {
-        return view('designs');
+        return redirect('designs');
     })->name('dashboard');
 
     // Route::resource('product-categories', ProductCategoryController::class);
